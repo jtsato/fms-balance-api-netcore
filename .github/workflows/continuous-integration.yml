@@ -157,7 +157,7 @@ jobs:
           RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
         run: |
           echo "Updating Production Environment to ${{ env.RELEASE_VERSION }}"
-          sed -i 's/<!-- txn-prd-start -->.*<!-- txn-prd-end -->/<!-- txn-prd-start -->${{ env.RELEASE_VERSION }}<!-- txn-prd-end -->/g' README.md
+          sed -i 's/<!-- bal-prd-start -->.*<!-- bal-prd-end -->/<!-- bal-prd-start -->${{ env.RELEASE_VERSION }}<!-- bal-prd-end -->/g' README.md
 
       - name: Check for changes
         run: |
