@@ -1,6 +1,6 @@
 # Balances API .NET Core
 
-Este projeto implementa os princípios da Clean Architecture utilizando .NET Core 8.0. Trata-se de um serviço responsável por registrar, armazenar e gerenciar lançamentos, garantindo consistência por meio de um banco de dados relacional PostgreSQL. Além disso, expõe APIs REST para facilitar a interação com os lançamentos de forma eficiente e escalável.
+Este projeto implementa os princípios da Clean Architecture utilizando .NET Core 8.0. Ele consiste em um serviço dedicado a agregar e calcular o saldo diário consolidado, garantindo a eficiência e escalabilidade necessárias para lidar com um elevado volume de requisições. Para otimizar as consultas, o sistema pode integrar um mecanismo de armazenamento aprimorado – como um banco NoSQL para leituras rápidas – que complementa a robusta infraestrutura da aplicação.
 
 [![CI](https://github.com/jtsato/fms-balance-api-netcore/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/jtsato/fms-balance-netcore/actions/workflows/continuous-integration.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=jtsato_balances-api-netcore&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=jtsato_balances-api-netcore)
