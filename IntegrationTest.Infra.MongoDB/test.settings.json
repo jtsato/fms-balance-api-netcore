@@ -1,0 +1,7 @@
+{
+  "DOCKER_COMPOSE_FILE": "docker-compose.yml",
+  "MONGODB_URL": "mongodb://xunit:xunit@localhost:27018/balances-mongodb",
+  "MONGODB_DATABASE": "balances-mongodb",
+  "BALANCE_COLLECTION_NAME": "balances",
+  "BALANCE_SEQUENCE_COLLECTION_NAME": "balances_sequences"
+}
