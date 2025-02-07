@@ -68,7 +68,7 @@ jobs:
         run: dotnet build --configuration Debug --no-restore
 
       - name: Mutation [Core]
-        working-directory: ./UnitTest.Core
+        working-directory: ./src/test/UnitTest.Core
         run: |
           dotnet new tool-manifest
           dotnet tool install dotnet-stryker --version 4.5.1
@@ -80,7 +80,7 @@ jobs:
           find ./src/test/UnitTest.Core/StrykerOutput -name '*.html' -exec cp -prv '{}' './docs/mutation-reports/Core' ';'
 
       - name: Mutation [EntryPoint WebApi]
-        working-directory: ./IntegrationTest.EntryPoint.WebApi
+        working-directory: ./src/test/IntegrationTest.EntryPoint.WebApi
         run: |
           dotnet new tool-manifest
           dotnet tool install dotnet-stryker --version 4.5.1
@@ -92,7 +92,7 @@ jobs:
           find ./src/test/IntegrationTest.EntryPoint.WebApi/StrykerOutput -name '*.html' -exec cp -prv '{}' './docs/mutation-reports/EntryPoint.WebApi' ';'
 
       - name: Mutation [Infra MongoDB]
-        working-directory: ./IntegrationTest.Infra.MongoDB
+        working-directory: ./src/test/IntegrationTest.Infra.MongoDB
         run: |
           dotnet new tool-manifest
           dotnet tool install dotnet-stryker --version 4.5.1
