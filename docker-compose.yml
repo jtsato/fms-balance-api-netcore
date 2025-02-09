@@ -23,7 +23,7 @@ services:
       ASPNETCORE_URLS: "http://+:80"
       MONGODB_URL: "mongodb://container:container@local.webapi.mongodb:27017/balances-mongodb"
       MONGODB_DATABASE_NAME: "balances-mongodb"
-      PROPERTY_COLLECTION_NAME: "balances"
-      PROPERTY_SEQUENCE_COLLECTION_NAME: "balances_sequences"
+      BALANCE_COLLECTION_NAME: "balances"
+      BALANCE_SEQUENCE_COLLECTION_NAME: "balances_sequences"
     depends_on:
       - local.webapi.mongodb

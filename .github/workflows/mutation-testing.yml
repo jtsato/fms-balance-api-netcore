@@ -5,7 +5,7 @@ on:
     branches:
       - "main"
     paths:
-      - ".github/workflows/03-balance-mutation-testing.yml"
+      - ".github/workflows/balance-mutation-testing.yml"
   schedule:
     - cron: "30 3 * * 1-5"
   workflow_dispatch:
@@ -59,8 +59,8 @@ jobs:
 
       - name: Hack [issue "MSB3026 Unable to copy file" for EmbeddedResources]
         run: |
-          mkdir -p src/main/IntegrationTest.EntryPoint.WebApi/bin/Debug/net8.0/pt-br 
-          mkdir -p src/main/IntegrationTest.EntryPoint.WebApi/bin/Debug/net8.0/en-us
+          mkdir -p src/test/IntegrationTest.EntryPoint.WebApi/bin/Debug/net8.0/pt-br 
+          mkdir -p src/test/IntegrationTest.EntryPoint.WebApi/bin/Debug/net8.0/en-us
           mkdir -p src/test/IntegrationTest.EntryPoint.WebApi/bin/Release/net8.0/pt-br 
           mkdir -p src/test/IntegrationTest.EntryPoint.WebApi/bin/Release/net8.0/en-us
 
