@@ -28,11 +28,10 @@ COPY --from=publish /app/publish .
 
 EXPOSE 8000
 
-RUN addgroup --gid 2000 ragnarok && \
-    adduser --disabled-password --gecos "" --uid 1000 --gid 2000 surtur && \
-    chown -R surtur:ragnarok /app
+RUN groupadd --gid 2000 ragnarok && \
+    chown -R 1000:2000 /app
 
-USER surtur:ragnarok
+USER 1000:2000
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
   CMD curl -f http://localhost:8000/health-check/live || exit 1
