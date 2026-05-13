@@ -1,5 +1,10 @@
 @ECHO OFF
 SETLOCAL ENABLEDELAYEDEXPANSION
+cd /d "%~dp0"
+
+SET "SLN=balances-api-netcore.sln"
+SET "WEB_PROJ=src\main\EntryPoint.WebApi\EntryPoint.WebApi.csproj"
+SET "SWAGGER_URL=http://localhost:5132/api/transactions-search/v1/swagger"
 
 IF /I "%~1"=="/?" GOTO help
 IF /I "%~1"=="--help" GOTO help
@@ -15,72 +20,39 @@ IF /I NOT "%~1"=="test" (
     )
 )
 
-:: Set the MongoDB host and port for the integration tests 
-
-SET host=127.0.0.1
-SET port=27018
-SET timeout=30
-
-ECHO.
-ECHO Starting the integration test database...
-CALL docker-compose -f src/test/IntegrationTest.Infra.MongoDB/docker-compose.yml up -d
-
-ECHO.
-:wait_loop
-
-ECHO Waiting for MongoDB to start...
-
-TIMEOUT /t 1 /nobreak > nul
-
-CURL --output NUL --silent --fail !host!:!port!
-IF !ERRORLEVEL! equ 0 (
-    ECHO.
-    ECHO MongoDB is running on port !port!.
-    TIMEOUT /t 4 /nobreak > nul
-) ELSE (
-    SET /a timeout-=1
-    IF !timeout! gtr 0 (
-        goto wait_loop
-    ) ELSE (
-        ECHO.
-        ECHO Timed out waiting for MongoDB to start.
-        EXIT /b 1
-    )
-)
-
 IF /I "%~1"=="test" GOTO test
 IF /I "%~1"=="coverage" GOTO coverage
 IF /I "%~1"=="mutation" GOTO mutation
 
 :help
 ECHO.
-ECHO Runs the application.
+ECHO FMS Balance API - development scripts.
 ECHO.
 ECHO Usage:
-ECHO %~0 [clean] [test] [run] [coverage] [mutation]
+ECHO %~0 [clean] [test] [app] [coverage] [mutation]
 ECHO.
-ECHO Parameter List:
-ECHO     clean      Clears the node_modules directory and other generated files.
+ECHO Parameters:
+ECHO     clean      Removes bin, obj, and StrykerOutput folders, then runs dotnet clean.
 ECHO.
-ECHO     test       Test the project.
+ECHO     test       Runs all tests in the solution.
 ECHO.
-ECHO     app        Runs the application.
+ECHO     app        Builds and runs the Web API (http launch profile from launchSettings).
 ECHO.
-ECHO     coverage   Test the project and generate a coverage report.
+ECHO     coverage   Runs tests with Coverlet and opens the HTML coverage report.
 ECHO.
-ECHO     mutation   Run mutation testing.
+ECHO     mutation   Runs Stryker on the three test projects (Core, WebApi, Infra.MongoDB).
 ECHO.
-ECHO.    /?         Displays this help message.
+ECHO     --help     Shows this help message (or /? as the first argument).
 
 GOTO end
 
 :clean
 ECHO.
 ECHO Removing binary files...
-CALL dotnet clean
-FOR /f %%i in ('dir bin /s /b') do rd /s /q %%i
-FOR /f %%i in ('dir obj /s /b') do rd /s /q %%i
-FOR /f %%i in ('dir StrykerOutput /s /b') do rd /s /q %%i
+CALL dotnet clean %SLN%
+FOR /f %%i in ('dir bin /s /b 2^>nul') do rd /s /q "%%i"
+FOR /f %%i in ('dir obj /s /b 2^>nul') do rd /s /q "%%i"
+FOR /f %%i in ('dir StrykerOutput /s /b 2^>nul') do rd /s /q "%%i"
 
 IF /I "%~2"=="test" GOTO test
 IF /I "%~2"=="coverage" GOTO coverage
@@ -91,49 +63,49 @@ GOTO end
 :test
 ECHO.
 ECHO Resolving dependencies...
-CALL dotnet restore --force --no-cache
+CALL dotnet restore %SLN% --force --no-cache
 
 ECHO.
-ECHO Building the project...
-CALL dotnet build --configuration Debug --no-restore
+ECHO Building the solution...
+CALL dotnet build %SLN% --configuration Debug --no-restore
 
 ECHO.
-ECHO Running test...
-CALL dotnet test --no-build --nologo -v q
+ECHO Running tests...
+CALL dotnet test %SLN% --no-build --nologo -v q
 
 GOTO end
 
 :app
 ECHO.
 ECHO Resolving dependencies...
-CALL dotnet restore --force --no-cache
+CALL dotnet restore %SLN% --force --no-cache
 
 ECHO.
-ECHO Building the project...
-CALL dotnet build --configuration Debug --no-restore
+ECHO Building the solution...
+CALL dotnet build %SLN% --configuration Debug --no-restore
 
 ECHO.
-ECHO Start browsing...
-START http://localhost:5132/api/balances-search/v1/swagger
+ECHO Opening Swagger UI...
+START "" "%SWAGGER_URL%"
 
 ECHO.
-ECHO Running the server...
-CALL dotnet run --no-build --no-restore --nologo --project ./EntryPoint.WebApi/EntryPoint.WebApi.csproj
+ECHO Running the server (MongoDB must be reachable; see launchSettings.json)...
+CALL dotnet run --no-build --no-restore --nologo --launch-profile http --project .\%WEB_PROJ%
 
 GOTO end
 
 :coverage
 ECHO.
 ECHO Resolving dependencies...
-CALL dotnet restore --force --no-cache
+CALL dotnet restore %SLN% --force --no-cache
 
 ECHO.
-ECHO Building the project...
-CALL dotnet build --configuration Debug --no-restore
+ECHO Building the solution...
+CALL dotnet build %SLN% --configuration Debug --no-restore
 
 ECHO.
-ECHO Running test...
-dotnet test --no-build --nologo -v q /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
+ECHO Running tests with coverage...
+dotnet test %SLN% --no-build --nologo -v q /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
 
 ECHO.
 ECHO Opening code coverage...
@@ -146,13 +118,13 @@ IF %ERRORLEVEL% equ 0 (
     dotnet tool install -g dotnet-reportgenerator-globaltool
     IF %ERRORLEVEL% equ 0 (
         ECHO Installation completed successfully.
-    ) else (
+    ) ELSE (
         ECHO Installation failed.
         EXIT /b 1
     )
 )
 
-reportgenerator "-reports:./**/coverage.cobertura.xml" "-targetdir:coverage\lcov-report" "-reporttypes:Html"
+reportgenerator "-reports:./**/*.cobertura.xml" "-targetdir:coverage\lcov-report" "-reporttypes:Html"
 
 start coverage\lcov-report\index.html
 
@@ -161,16 +133,35 @@ GOTO end
 :mutation
 ECHO.
 ECHO Resolving dependencies...
-CALL dotnet restore --force --no-cache
+CALL dotnet restore %SLN% --force --no-cache
 
 ECHO.
-ECHO Building the project...
-CALL dotnet build --configuration Debug --no-restore
+ECHO Building the solution...
+CALL dotnet build %SLN% --configuration Debug --no-restore
 
-ECHO.
-ECHO Running Mutation test...
-dotnet stryker -o
+CALL :run_stryker "src\test\UnitTest.Core" "Mutation - Core"
+CALL :run_stryker "src\test\IntegrationTest.EntryPoint.WebApi" "Mutation - EntryPoint.WebApi"
+CALL :run_stryker "src\test\IntegrationTest.Infra.MongoDB" "Mutation - Infra.MongoDB"
 
 GOTO end
+
+:run_stryker
+SET "STRYKER_DIR=%~1"
+SET "STRYKER_LABEL=%~2"
+ECHO.
+ECHO %STRYKER_LABEL%
+PUSHD "%STRYKER_DIR%"
+IF NOT EXIST "dotnet-tools.json" (
+    IF NOT EXIST ".config\dotnet-tools.json" (
+        dotnet new tool-manifest
+    )
+)
+dotnet tool install dotnet-stryker --version 4.5.1
+IF ERRORLEVEL 1 dotnet tool update dotnet-stryker --version 4.5.1
+dotnet stryker -o
+SET "ERR=!ERRORLEVEL!"
+POPD
+IF !ERR! neq 0 EXIT /b !ERR!
+GOTO :eof
 
 :end

@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -173,17 +173,11 @@ public static class Program
             Type = SecuritySchemeType.ApiKey
         });
 
-        options.AddSecurityRequirement(new OpenApiSecurityRequirement
+        options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
         {
             {
-                new OpenApiSecurityScheme
-                {
-                    Name = "X-Api-Key",
-                    Type = SecuritySchemeType.ApiKey,
-                    In = ParameterLocation.Header,
-                    Reference = new OpenApiReference {Type = ReferenceType.SecurityScheme, Id = "ApiKey"}
-                },
-                Array.Empty<string>()
+                new OpenApiSecuritySchemeReference("ApiKey", document, null),
+                new List<string>()
             }
         });
 

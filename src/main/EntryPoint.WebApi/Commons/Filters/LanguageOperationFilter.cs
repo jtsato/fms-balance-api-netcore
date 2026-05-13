@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using Microsoft.OpenApi.Any;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace EntryPoint.WebApi.Commons.Filters;
@@ -12,7 +11,7 @@ public sealed class LanguageOperationFilter : IOperationFilter
 {
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
-        operation.Parameters ??= new List<OpenApiParameter>();
+        operation.Parameters ??= new List<IOpenApiParameter>();
         operation.Parameters.Insert(0, new OpenApiParameter
         {
             Name = "Accept-Language",
@@ -21,8 +20,8 @@ public sealed class LanguageOperationFilter : IOperationFilter
             Required = false,
             Schema = new OpenApiSchema
             {
-                Type = "string",
-                Default = new OpenApiString("en-US")
+                Type = JsonSchemaType.String,
+                Default = "en-US"
             }
         });
     }

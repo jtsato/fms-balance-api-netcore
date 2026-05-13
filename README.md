@@ -1,6 +1,6 @@
 # Balances API .NET Core
 
-Este projeto implementa os princípios da Clean Architecture utilizando .NET Core 8.0. Ele consiste em um serviço dedicado a agregar e calcular o saldo diário consolidado, garantindo a eficiência e escalabilidade necessárias para lidar com um elevado volume de requisições. Para otimizar as consultas, o sistema pode integrar um mecanismo de armazenamento aprimorado – como um banco NoSQL para leituras rápidas – que complementa a robusta infraestrutura da aplicação.
+Este projeto implementa os princípios da Clean Architecture utilizando .NET 10 (LTS). Ele consiste em um serviço dedicado a agregar e calcular o saldo diário consolidado, garantindo a eficiência e escalabilidade necessárias para lidar com um elevado volume de requisições. Para otimizar as consultas, o sistema pode integrar um mecanismo de armazenamento aprimorado – como um banco NoSQL para leituras rápidas – que complementa a robusta infraestrutura da aplicação.
 
 [![CI](https://github.com/jtsato/fms-balance-api-netcore/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/jtsato/fms-balance-netcore/actions/workflows/continuous-integration.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=jtsato_balances-api-netcore&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=jtsato_balances-api-netcore)
@@ -60,7 +60,7 @@ Este projeto implementa os princípios da Clean Architecture utilizando .NET Cor
 
 ## Technology stack
 
-![.Net](https://img.shields.io/badge/.NET-5C2D91?logo=.net&logoColor=white)
+![.Net](https://img.shields.io/badge/.NET%2010-5C2D91?logo=.net&logoColor=white)
 ![c-sharp](https://img.shields.io/badge/C%23-239120?logo=c-sharp&logoColor=white)
 ![Web Api](https://img.shields.io/badge/Web%20Api-grey?logo=dotnet&logoColor=white)
 ![swagger](https://img.shields.io/badge/Swagger-85EA2D?logo=Swagger&logoColor=white)
@@ -70,7 +70,7 @@ Este projeto implementa os princípios da Clean Architecture utilizando .NET Cor
 
 ## Prerequisites
 
-* [.NET 8](https://dotnet.microsoft.com/download)
+* [.NET 10](https://dotnet.microsoft.com/download)
 * [Docker](https://docs.docker.com/get-docker)
 * [Docker compose](https://docs.docker.com/compose/install/)
 
@@ -145,7 +145,7 @@ dotnet stryker
 ```
 * Iniciando a solução:
 ```
-cd EntryPoint.WebApi/bin/Debug/net8.0
+cd EntryPoint.WebApi/bin/Debug/net10.0
 dotnet EntryPoint.WebApi.dll
 ```
 ***
