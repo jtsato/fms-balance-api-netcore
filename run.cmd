@@ -156,8 +156,8 @@ IF NOT EXIST "dotnet-tools.json" (
         dotnet new tool-manifest
     )
 )
-dotnet tool install dotnet-stryker --version 4.5.1
-IF ERRORLEVEL 1 dotnet tool update dotnet-stryker --version 4.5.1
+dotnet tool install dotnet-stryker --version 4.16.0
+IF ERRORLEVEL 1 dotnet tool update dotnet-stryker --version 4.16.0
 dotnet stryker -o
 SET "ERR=!ERRORLEVEL!"
 POPD

@@ -71,7 +71,7 @@ jobs:
         working-directory: ./src/test/UnitTest.Core
         run: |
           dotnet new tool-manifest
-          dotnet tool install dotnet-stryker --version 4.5.1
+          dotnet tool install dotnet-stryker --version 4.16.0
           dotnet stryker
 
       - name: Copy report to right place [Core]
@@ -83,7 +83,7 @@ jobs:
         working-directory: ./src/test/IntegrationTest.EntryPoint.WebApi
         run: |
           dotnet new tool-manifest
-          dotnet tool install dotnet-stryker --version 4.5.1
+          dotnet tool install dotnet-stryker --version 4.16.0
           dotnet stryker
 
       - name: Copy report to right place [WebApi]
@@ -95,7 +95,7 @@ jobs:
         working-directory: ./src/test/IntegrationTest.Infra.MongoDB
         run: |
           dotnet new tool-manifest
-          dotnet tool install dotnet-stryker --version 4.5.1
+          dotnet tool install dotnet-stryker --version 4.16.0
           dotnet stryker
 
       - name: Copy report to right place [Infra MongoDB]
