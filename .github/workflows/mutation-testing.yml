@@ -10,11 +10,15 @@ on:
     - cron: "30 3 * * 1-5"
   workflow_dispatch:
 
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
+# Allow one concurrent deployment
 concurrency:
-  group: 'mutation-testing'
+  group: 'pages'
   cancel-in-progress: true
 
 env:
@@ -37,11 +41,6 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
-      - name: Install Stryker Globally
-        run: |
-          dotnet tool install --global dotnet-stryker --version 4.16.0
-          echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
-
       - name: Start MongoDB Container
         run: docker compose -f src/test/IntegrationTest.Infra.MongoDB/docker-compose.yml up -d
 
@@ -58,17 +57,36 @@ jobs:
 
       - name: Mutation [Core]
         working-directory: ./src/test/UnitTest.Core
-        run: dotnet stryker
+        run: |
+          dotnet new tool-manifest
+          dotnet tool install dotnet-stryker --version 4.16.0
+          dotnet stryker
+
+      - name: Copy report to right place [Core]
+        run: |
+          mkdir -p ./docs/mutation-reports/Core
+          find ./src/test/UnitTest.Core/StrykerOutput -name '*.html' -exec cp -prv '{}' './docs/mutation-reports/Core' ';'
 
       - name: Mutation [EntryPoint WebApi]
         working-directory: ./src/test/IntegrationTest.EntryPoint.WebApi
-        run: dotnet stryker
+        run: |
+          dotnet new tool-manifest
+          dotnet tool install dotnet-stryker --version 4.16.0
+          dotnet stryker
+
+      - name: Copy report to right place [WebApi]
+        run: |
+          mkdir -p ./docs/mutation-reports/EntryPoint.WebApi
+          find ./src/test/IntegrationTest.EntryPoint.WebApi/StrykerOutput -name '*.html' -exec cp -prv '{}' './docs/mutation-reports/EntryPoint.WebApi' ';'
 
       - name: Mutation [Infra MongoDB]
         working-directory: ./src/test/IntegrationTest.Infra.MongoDB
-        run: dotnet stryker
+        run: |
+          dotnet new tool-manifest
+          dotnet tool install dotnet-stryker --version 4.16.0
+          dotnet stryker
 
-      - name: Gather Reports
+      - name: Copy report to right place [Infra MongoDB]
         run: |
           mkdir -p ./docs/mutation-reports/Core ./docs/mutation-reports/EntryPoint.WebApi ./docs/mutation-reports/Infra.MongoDB
           find ./src/test/UnitTest.Core/StrykerOutput -name '*.html' -exec cp -prv '{}' './docs/mutation-reports/Core' ';' || true
@@ -78,11 +96,11 @@ jobs:
       - name: Commit and Push Changes
         run: |
           if [ -n "$(git status --porcelain)" ]; then
-            git config pull.rebase false        
-            git config --local user.email "action@github.com"
-            git config --local user.name "Stryker.NET"
+          git config pull.rebase false        
+          git config --local user.email "action@github.com"
+          git config --local user.name "Stryker.NET"
             git add docs/mutation-reports/
-            git commit -m "doc(testing): update mutation reports"
+          git commit -m "doc(testing): update mutation reports"
             git pull origin main
             git push origin main
           else
@@ -91,4 +109,6 @@ jobs:
 
       - name: Environment Teardown
         if: always()
-        run: docker compose -f src/test/IntegrationTest.Infra.MongoDB/docker-compose.yml down
+        run: |
+          docker compose -f src/test/IntegrationTest.Infra.MongoDB/docker-compose.yml down
+          echo "Environment Teardown"
