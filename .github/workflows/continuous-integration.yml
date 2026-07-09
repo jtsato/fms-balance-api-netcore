@@ -40,7 +40,6 @@ jobs:
         with:
           dotnet-version: |
             10.0.x
-          cache: true
 
       - name: Checkout repository
         uses: actions/checkout@v7
