@@ -93,11 +93,11 @@ jobs:
       - name: Commit and Push Changes
         run: |
           if [ -n "$(git status --porcelain)" ]; then
-          git config pull.rebase false        
-          git config --local user.email "action@github.com"
-          git config --local user.name "Stryker.NET"
+            git config pull.rebase false        
+            git config --local user.email "action@github.com"
+            git config --local user.name "Stryker.NET"
             git add docs/mutation-reports/
-          git commit -m "doc(testing): update mutation reports"
+            git commit -m "doc(testing): update mutation reports"
             git pull origin main
             git push origin main
           else
