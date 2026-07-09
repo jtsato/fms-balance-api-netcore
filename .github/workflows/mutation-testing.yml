@@ -38,7 +38,9 @@ jobs:
           dotnet-version: 10.0.x
 
       - name: Install Stryker Globally
-        run: dotnet tool install --global dotnet-stryker --version 4.16.0
+        run: |
+          dotnet tool install --global dotnet-stryker --version 4.16.0
+          echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
 
       - name: Start MongoDB Container
         run: docker compose -f src/test/IntegrationTest.Infra.MongoDB/docker-compose.yml up -d
