@@ -46,7 +46,7 @@ public static class MongoCollectionQueryByPageExtensions
         return (totalPages, totalOfElements, content);
     }
 
-    private static long GetTotalOfElements(IReadOnlyList<AggregateFacetResults> aggregation)
+    private static long GetTotalOfElements(List<AggregateFacetResults> aggregation)
     {
         AggregateFacetResult? aggregateFacetResult = aggregation[0].Facets.FirstOrDefault(element => element.Name == "count");
         return aggregateFacetResult is not null && aggregateFacetResult.Output<AggregateCountResult>().Count != 0
