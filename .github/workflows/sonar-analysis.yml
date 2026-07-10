@@ -78,7 +78,8 @@ jobs:
             /d:sonar.host.url="https://sonarcloud.io" \
             /d:sonar.qualitygate.wait=false \
             /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" \
-            /d:sonar.dotnet.excludeTestProjects=true
+            /d:sonar.dotnet.excludeTestProjects=false \
+            /d:sonar.cpd.exclusions=docs/mutation-reports/**
 
           # Build occurs strictly inside the begin/end block
           dotnet build balances-api-netcore.sln --configuration Debug --no-restore
