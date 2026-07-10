@@ -28,6 +28,7 @@ namespace EntryPoint.WebApi;
 public static class Program
 {
     private static readonly string[] MimeTypes = [ "text/plain", "application/json" ];
+    private static readonly string[] Tags = ["live", "ready"];
 
     private static async Task Main(string[] args)
     {
@@ -60,8 +61,7 @@ public static class Program
             builder.Services.AddSwaggerGen(ConfigureSwaggerGen);
         }
 
-        builder.Services.AddHealthChecks()
-            .AddCheck("Health check", () => HealthCheckResult.Healthy(), tags: new[] {"live", "ready"});
+        builder.Services.AddHealthChecks().AddCheck("Health check", () => HealthCheckResult.Healthy(), tags: Tags);
 
         Dictionary<Type, ServiceLifetime> lifetimeByType= DependencyInjector.ConfigureServices(builder.Services);
 
@@ -72,14 +72,6 @@ public static class Program
                 {
                     policy.WithOrigins
                         (
-                            "https://patolar.com.br",
-                            "https://www.patolar.com.br",
-                            "https://app.patolar.com.br",
-                            "https://api.patolar.com.br",
-                            "https://patolar-dev.flutterflow.app",
-                            "https://app.flutterflow.io",
-                            "https://ff-debug-service-frontend-free-ygxkweukma-uc.a.run.app",
-                            "https://ff-debug-service-frontend-pro-ygxkweukma-uc.a.run.app",
                             "http://localhost:8000"
                         )
                         .AllowAnyHeader()
