@@ -27,6 +27,8 @@ namespace EntryPoint.WebApi;
 [ExcludeFromCodeCoverage]
 public static class Program
 {
+    private static readonly string[] MimeTypes = [ "text/plain", "application/json" ];
+
     private static async Task Main(string[] args)
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -91,11 +93,7 @@ public static class Program
             options.EnableForHttps = true;
             options.Providers.Add<BrotliCompressionProvider>();
             options.Providers.Add<GzipCompressionProvider>();
-            options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[]
-            {
-                "text/plain",
-                "application/json",
-            });
+            options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(MimeTypes);
         });
 
         builder.Services.Configure<BrotliCompressionProviderOptions>(options =>
@@ -176,7 +174,7 @@ public static class Program
         options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
         {
             {
-                new OpenApiSecuritySchemeReference("ApiKey", document, null), []
+                new OpenApiSecuritySchemeReference("ApiKey", document), []
             }
         });
 
