@@ -176,8 +176,7 @@ public static class Program
         options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
         {
             {
-                new OpenApiSecuritySchemeReference("ApiKey", document, null),
-                new List<string>()
+                new OpenApiSecuritySchemeReference("ApiKey", document, null), []
             }
         });
 
@@ -186,7 +185,7 @@ public static class Program
         options.DocInclusionPredicate((_, api) => !string.IsNullOrWhiteSpace(api.GroupName));
         options.TagActionsBy(api => new[] {api.GroupName});
 
-        string[] methodsOrder = {"post", "put", "patch", "delete", "get", "options", "trace"};
+        string[] methodsOrder = ["post", "put", "patch", "delete", "get", "options", "trace"];
         options.OrderActionsBy(apiDesc => $"{Array.IndexOf(methodsOrder, apiDesc.HttpMethod!.ToLower())}_{apiDesc.HttpMethod}");
     }
 

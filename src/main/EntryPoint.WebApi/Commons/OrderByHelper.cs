@@ -9,7 +9,7 @@ public static partial class OrderByHelper
 {
     private const string AscendingDirection = "ASC";
     private const string DescendingDirection = "DESC";
-    private static readonly char[] Separators = {',', ':'};
+    private static readonly char[] Separators = [',', ':'];
 
     public static string Sanitize(string[] sortableFields, List<string> rawOrderBys)
     {
@@ -22,7 +22,7 @@ public static partial class OrderByHelper
 
         string orderBy = rawOrderBy.Replace(" ", "");
         string[] values = orderBy.Split(Separators);
-        List<string> sanitized = new List<string>();
+        List<string> sanitized = [];
 
         foreach (string value in values)
         {
@@ -41,7 +41,7 @@ public static partial class OrderByHelper
         return string.Join(",", sanitized.Where(it => !string.IsNullOrEmpty(it)));
     }
 
-    private static void AddDirection(IList<string> sanitized, string value)
+    private static void AddDirection(List<string> sanitized, string value)
     {
         if (sanitized.Count <= 0 || IsDirectionCommand(sanitized[^1])) return;
         sanitized[^1] = string.Concat(sanitized[^1], ":", value.ToUpper());

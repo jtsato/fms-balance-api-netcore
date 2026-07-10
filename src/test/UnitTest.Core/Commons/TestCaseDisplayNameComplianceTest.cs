@@ -14,7 +14,7 @@ namespace UnitTest.Core.Commons;
 public sealed class TestCaseDisplayNameComplianceTest
 {
     private const string CurrentProjectName = "UnitTest.Core";
-    private static readonly string[] ExcludedDisplayNamePrefixes = {"POST", "GET", "PUT", "DELETE"};
+    private static readonly string[] ExcludedDisplayNamePrefixes = ["POST", "GET", "PUT", "DELETE"];
 
     private readonly ITestOutputHelper _outputHelper;
 
@@ -34,7 +34,7 @@ public sealed class TestCaseDisplayNameComplianceTest
         string[] pathToFiles = Directory.GetFiles($"{projectRootFolder}", "*Test.cs", SearchOption.AllDirectories);
 
         // Act
-        List<NonCompliance> nonCompliances = new List<NonCompliance>();
+        List<NonCompliance> nonCompliances = [];
 
         foreach (string pathToFile in pathToFiles)
         {
@@ -65,7 +65,7 @@ public sealed class TestCaseDisplayNameComplianceTest
         string displayName = string.Empty;
         int lineNumber = 0;
 
-        List<NonCompliance> nonCompliances = new List<NonCompliance>();
+        List<NonCompliance> nonCompliances = [];
 
         foreach (string line in CollectionsMarshal.AsSpan(lines))
         {

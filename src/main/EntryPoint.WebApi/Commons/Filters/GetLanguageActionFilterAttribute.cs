@@ -13,7 +13,7 @@ namespace EntryPoint.WebApi.Commons.Filters;
 [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
 public sealed class GetLanguageActionFilterAttribute : ActionFilterAttribute
 {
-    private static readonly string[] SupportedCultures = {"pt-BR", "en-US"};
+    private static readonly string[] SupportedCultures = ["pt-BR", "en-US"];
 
     public override void OnActionExecuting(ActionExecutingContext context)
     {

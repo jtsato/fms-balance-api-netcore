@@ -49,7 +49,7 @@ public sealed class MessageResourceMappingTest(ITestOutputHelper outputHelper, C
         ICollection<string> messageResourcesKeys
     )
     {
-        List<string> messageKeysNotMappedInResourceFile = new List<string>();
+        List<string> messageKeysNotMappedInResourceFile = [];
         IEnumerable<string> messageKeys = coreProjectMessageKeys.Where(messageKey => !messageResourcesKeys.Contains(messageKey));
 
         foreach (string messageKey in messageKeys)

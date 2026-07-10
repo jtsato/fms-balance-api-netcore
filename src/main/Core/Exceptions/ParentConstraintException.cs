@@ -8,7 +8,7 @@ public sealed class ParentConstraintException(string message, params object[] ar
 {
     public override string ToString()
     {
-        return $"{base.ToString()}, Parameters: {string.Join(", ", Parameters ?? Array.Empty<object>())}";
+        return $"{base.ToString()}, Parameters: {string.Join(", ", Parameters ?? [])}";
     }
 
 }

@@ -8,7 +8,7 @@ public sealed class AccessDeniedException(string message, params object[] args) 
 {
     public override string ToString()
     {
-        return $"{base.ToString()}, Parameters: {string.Join(", ", Parameters ?? Array.Empty<object>())}";
+        return $"{base.ToString()}, Parameters: {string.Join(", ", Parameters ?? [])}";
     }
 
 }

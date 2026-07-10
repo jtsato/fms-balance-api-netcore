@@ -12,7 +12,7 @@ public sealed class FilterDefinitionHelperTest
     public void FailToAddFilterDefinitionIfValueIsNull()
     {
         // Arrange
-        List<FilterDefinition<DummyEntity>> filterDefinitions = new List<FilterDefinition<DummyEntity>>();
+        List<FilterDefinition<DummyEntity>> filterDefinitions = [];
 
         // Act
         FilterHelper.AddEqualsFilter(filterDefinitions, document => document.Id, null);
@@ -32,11 +32,11 @@ public sealed class FilterDefinitionHelperTest
     public void FailToAddFilterDefinitionIfValueIsNotRelevant()
     {
         // Arrange
-        List<FilterDefinition<DummyEntity>> filterDefinitions = new List<FilterDefinition<DummyEntity>>();
+        List<FilterDefinition<DummyEntity>> filterDefinitions = [];
 
         // Act
         FilterHelper.AddEqualsFilter(filterDefinitions, document => document.Id, 0);
-        FilterHelper.AddInArrayFilter(filterDefinitions, document => document.Name, new List<string>());
+        FilterHelper.AddInArrayFilter(filterDefinitions, document => document.Name, []);
         FilterHelper.AddInArrayFilter(filterDefinitions, document => document.Surname, null);
         
         FilterHelper.AddGreaterOrEqualFilter(filterDefinitions, document => document.Age, 0);
@@ -51,7 +51,7 @@ public sealed class FilterDefinitionHelperTest
     public void SuccessfulToAddFilterDefinitionIfValueIsNotNull()
     {
         // Arrange
-        List<FilterDefinition<DummyEntity>> filterDefinitions = new List<FilterDefinition<DummyEntity>>();
+        List<FilterDefinition<DummyEntity>> filterDefinitions = [];
 
         // Act
         FilterHelper.AddEqualsFilter(filterDefinitions, document => document.Id, 1);

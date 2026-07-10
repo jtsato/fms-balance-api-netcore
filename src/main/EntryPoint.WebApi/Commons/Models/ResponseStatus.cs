@@ -21,7 +21,7 @@ public sealed class ResponseStatus
     {
         Code = code;
         Message = message;
-        Fields = new List<Field>(0);
+        Fields = [];
     }
 
     [ExcludeFromCodeCoverage]

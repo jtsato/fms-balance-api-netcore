@@ -62,7 +62,7 @@ public static class JsonSchemaValidator
 
     private static List<FieldError> GetWrongTypeFieldsErrors(JToken jObject, JSchema jSchema)
     {
-        IList<ValidationError> schemaErrors = new List<ValidationError>();
+        List<ValidationError> schemaErrors = [];
 
         jObject.Validate(jSchema, (_, args) => schemaErrors.Add(args.ValidationError));
 
