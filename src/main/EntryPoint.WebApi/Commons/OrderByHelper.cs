@@ -11,9 +11,6 @@ public static partial class OrderByHelper
     private const string DescendingDirection = "DESC";
     private static readonly char[] Separators = {',', ':'};
 
-    [GeneratedRegex("\\s+")]
-    private static partial Regex BlankSpaces();
-
     public static string Sanitize(string[] sortableFields, List<string> rawOrderBys)
     {
         return rawOrderBys != null ? Sanitize(sortableFields, string.Join(",", rawOrderBys)) : string.Empty;
@@ -23,7 +20,7 @@ public static partial class OrderByHelper
     {
         if (string.IsNullOrWhiteSpace(rawOrderBy)) return string.Empty;
 
-        string orderBy = BlankSpaces().Replace(rawOrderBy, "");
+        string orderBy = rawOrderBy.Replace(" ", "");
         string[] values = orderBy.Split(Separators);
         List<string> sanitized = new List<string>();
 

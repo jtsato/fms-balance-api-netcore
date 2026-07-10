@@ -12,9 +12,6 @@ public static partial class PageRequestHelper
     private const string FieldSeparator = ",";
     private const string DirectionSeparator = ":";
 
-    [GeneratedRegex("\\s+")]
-    private static partial Regex BlankSpaces();
-
     public static PageRequest Of(string rawPageNumber, string rawPageSize, string rawOrderBy)
     {
         int pageNumber = int.TryParse(rawPageNumber, out int intPageNumber) ? intPageNumber : 0;
@@ -26,7 +23,7 @@ public static partial class PageRequestHelper
     {
         if (string.IsNullOrWhiteSpace(rawOrderBy)) return Sort.Unsorted;
 
-        string orderBy = BlankSpaces().Replace(rawOrderBy, "");
+        string orderBy = rawOrderBy.Replace(" ", "");
 
         string[] strings = orderBy.Split(FieldSeparator);
         

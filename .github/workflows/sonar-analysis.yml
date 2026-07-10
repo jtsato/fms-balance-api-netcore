@@ -72,7 +72,7 @@ jobs:
           ./.sonar/scanner/dotnet-sonarscanner begin /o:"jtsato" \
             /k:"jtsato_balances-api-netcore" \
             /n:"balances-api-netcore" \
-            /d:sonar.projectDescription="Properties API .NET Core" \
+            /d:sonar.projectDescription="Balances API .NET Core" \
             /d:sonar.links.scm="https://github.com/jtsato/balances-api-netcore" \
             /d:sonar.login="${{ env.SONAR_TOKEN }}" \
             /d:sonar.host.url="https://sonarcloud.io" \
