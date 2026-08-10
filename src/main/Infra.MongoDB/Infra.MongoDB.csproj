@@ -7,9 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="MongoDB.Bson" Version="3.10.0" />
-        <PackageReference Include="MongoDB.Driver" Version="3.10.0" />
-        <PackageReference Include="SharpCompress" Version="0.49.1" />
+        <PackageReference Include="MongoDB.Bson" />
+        <PackageReference Include="MongoDB.Driver" />
+        <PackageReference Include="SharpCompress" />
     </ItemGroup>
 
     <ItemGroup>

@@ -5,7 +5,7 @@ on:
     branches:
       - "main"
     paths:
-      - ".github/workflows/balance-mutation-testing.yml"
+      - ".github/workflows/mutation-testing.yml"
   schedule:
     - cron: "30 3 * * 1-5"
   workflow_dispatch:
@@ -13,8 +13,6 @@ on:
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 # Allow one concurrent deployment
 concurrency:
@@ -30,22 +28,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: main
           persist-credentials: true
           fetch-depth: 0
 
       - name: Setup .NET [v10.0.x]
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
         with:
           dotnet-version: 10.0.x
 
       - name: Start MongoDB Container
-        run: docker compose -f src/test/IntegrationTest.Infra.MongoDB/docker-compose.yml up -d
+        run: docker compose -f src/test/IntegrationTest.Infra.MongoDB/docker-compose.yml up -d --wait
 
       - name: Resolve dependencies
-        run: dotnet restore --force --no-cache
+        run: dotnet restore --force --no-http-cache
 
       - name: Hack [issue "MSB3026 Unable to copy file" for EmbeddedResources]
         run: |

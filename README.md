@@ -2,7 +2,7 @@
 
 Este projeto implementa os princípios da Clean Architecture utilizando .NET 10 (LTS). Ele consiste em um serviço dedicado a agregar e calcular o saldo diário consolidado, garantindo a eficiência e escalabilidade necessárias para lidar com um elevado volume de requisições. Para otimizar as consultas, o sistema pode integrar um mecanismo de armazenamento aprimorado – como um banco NoSQL para leituras rápidas – que complementa a robusta infraestrutura da aplicação.
 
-[![CI](https://github.com/jtsato/fms-balance-api-netcore/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/jtsato/fms-balance-netcore/actions/workflows/continuous-integration.yml)
+[![CI](https://github.com/jtsato/fms-balance-api-netcore/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/jtsato/fms-balance-api-netcore/actions/workflows/continuous-integration.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=jtsato_balances-api-netcore&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=jtsato_balances-api-netcore)
 
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=jtsato_balances-api-netcore&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=jtsato_balances-api-netcore)
@@ -70,9 +70,11 @@ Este projeto implementa os princípios da Clean Architecture utilizando .NET 10 
 
 ## Prerequisites
 
-* [.NET 10](https://dotnet.microsoft.com/download)
+* [.NET 10 SDK](https://dotnet.microsoft.com/download)
 * [Docker](https://docs.docker.com/get-docker)
 * [Docker compose](https://docs.docker.com/compose/install/)
+
+The SDK baseline is pinned in `global.json`, and NuGet versions are centrally managed in `Directory.Packages.props`.
 
 ## Solution Structure
 
@@ -149,6 +151,15 @@ cd EntryPoint.WebApi/bin/Debug/net10.0
 dotnet EntryPoint.WebApi.dll
 ```
 ***
+
+## Container and health checks
+
+Run the complete local stack with:
+```
+docker compose up --build
+```
+
+The API is available at `http://localhost:8088`. Liveness and readiness endpoints are available at `/health-check/live` and `/health-check/ready`.
 
 ## Resources
 ##### Blogs & Artigos
